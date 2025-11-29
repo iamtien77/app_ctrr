@@ -1,4 +1,0 @@
-"""
-Graph visualization components
-"""
-
