@@ -252,16 +252,15 @@ class GraphGUI:
         """Thu/mở panel trái"""
         if self.left_panel_visible:
             self.main_paned.forget(self.left_frame)
-            self.left_toggle_btn.config(text="▶")
-            self.left_toggle_btn.place(x=5, y=50)
-            # Đặt nút vào panel giữa
             self.left_toggle_btn.place_forget()
             self.left_toggle_btn = tk.Button(self.center_frame, text="▶", command=self.toggle_left_panel,
                                             bg='#4A90E2', fg='white', font=('Arial', 10, 'bold'),
                                             width=2, relief=tk.RAISED)
             self.left_toggle_btn.place(x=5, y=5)
         else:
-            self.main_paned.insert(0, self.left_frame)
+            # Thêm lại panel trái vào vị trí đầu tiên
+            panes = list(self.main_paned.panes())
+            self.main_paned.add(self.left_frame, before=panes[0] if panes else None)
             self.left_toggle_btn.place_forget()
             self.left_toggle_btn = tk.Button(self.left_frame, text="◀", command=self.toggle_left_panel,
                                             bg='#4A90E2', fg='white', font=('Arial', 10, 'bold'),

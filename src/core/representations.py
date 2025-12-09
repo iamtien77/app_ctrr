@@ -21,7 +21,11 @@ class AdjacencyMatrix:
             graph: Đồ thị cần chuyển đổi
         """
         self.graph = graph
-        self.vertices = sorted(graph.get_vertices())
+        # Sắp xếp đỉnh: số trước, chữ sau
+        try:
+            self.vertices = sorted(graph.get_vertices(), key=lambda x: (isinstance(x, str), x))
+        except:
+            self.vertices = list(graph.get_vertices())
         self.vertex_to_index = {v: i for i, v in enumerate(self.vertices)}
         self.matrix = self._build_matrix()
     

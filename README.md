@@ -1,7 +1,17 @@
-# Ứng Dụng Quản Lý và Phân Tích Đồ Thị
+# Graph Algorithm Visualizer
 
-Ứng dụng Python với **giao diện đồ họa** (GUI) để quản lý, phân tích và trực quan hóa đồ thị với các chức năng cơ bản và nâng cao.
-Toàn bộ code được chú thích bằng **tiếng Việt có dấu** rõ ràng, dễ hiểu.
+Ứng dụng trực quan hóa và phân tích các thuật toán đồ thị với **2 phiên bản giao diện**:
+
+- **Web App** (Streamlit) - Truy cập qua trình duyệt, không cần cài đặt
+- **Desktop App** (Tkinter) - Chạy trên máy tính
+
+Toàn bộ code được chú thích bằng tiếng Việt rõ ràng, dễ hiểu.
+
+## Demo
+
+**Web App:** [https://your-app.streamlit.app](https://your-app.streamlit.app) *(sau khi deploy)*
+
+**Desktop App:** Clone repo và chạy `python gui_app.py`
 
 ## Tính Năng Chính
 
@@ -53,11 +63,17 @@ Toàn bộ code được chú thích bằng **tiếng Việt có dấu** rõ rà
 - **Kéo thả đỉnh**: Di chuyển đỉnh bằng chuột để tùy chỉnh bố cục
 - **Zoom & Pan**: Công cụ matplotlib tích hợp để phóng to/thu nhỏ
 
-## Cấu Trúc Dự Án
+## 📁 Cấu Trúc Dự Án
 
 ```
 App_ctrr/
-├── gui_app.py                   # Ứng dụng GUI chính (khởi chạy từ đây)
+├── 🌐 streamlit_app.py          # Web App (Streamlit) - KHUYÊN DÙNG
+├── 🖥️ gui_app.py                # Desktop App (Tkinter)
+├── 📦 requirements.txt          # Thư viện cần thiết
+├── 📖 DEPLOY_GUIDE.md           # Hướng dẫn deploy web app
+├── 📖 QUICK_START.txt           # Hướng dẫn nhanh 3 bước
+├── 🧪 test_streamlit.py         # Test imports
+├── 🎲 create_sample_data.py     # Tạo dữ liệu mẫu
 ├── src/
 │   ├── core/                    # Module cốt lõi
 │   │   ├── graph.py            # Lớp đồ thị cơ bản
@@ -83,35 +99,48 @@ App_ctrr/
 └── NAMING_CONVENTIONS.md       # Quy tắc đặt tên
 ```
 
-## Cài Đặt
+## 🚀 Cài Đặt & Sử Dụng
 
 ### Yêu Cầu
-- Python 3.8 trở lên
+- Python 3.8+
 - pip (Python package installer)
+- Git
 
-### Các Bước Cài Đặt
+### ⚡ Cách 1: Web App (Khuyên dùng - Dễ nhất)
 
-1. **Clone hoặc tải dự án về**
+**Không cần cài đặt gì - Chỉ cần truy cập link:**
+
+👉 **[https://your-app.streamlit.app](https://your-app.streamlit.app)** *(sau khi deploy)*
+
+**Hoặc muốn chạy local:**
+
 ```bash
-cd App_ctrr
-```
+# Clone project
+git clone https://github.com/iamtien77/app_ctrr.git
+cd app_ctrr
 
-2. **Cài đặt các thư viện cần thiết**
-```bash
+# Cài đặt thư viện
 pip install -r requirements.txt
+
+# Chạy web app
+streamlit run streamlit_app.py
 ```
 
-Các thư viện bao gồm:
-- `networkx >= 3.0` - Thư viện đồ thị
-- `matplotlib >= 3.7.0` - Vẽ biểu đồ
-- `numpy >= 1.24.0` - Tính toán số học
+Truy cập: http://localhost:8501
 
-## Sử Dụng
+### 🖥️ Cách 2: Desktop App (Tkinter)
 
-### Chạy Ứng Dụng GUI
 ```bash
+# Sau khi clone và cài đặt thư viện
 python gui_app.py
 ```
+
+### 📦 Thư viện cần thiết
+- `streamlit >= 1.28.0` - Web framework
+- `plotly >= 5.17.0` - Interactive graphs
+- `networkx >= 3.0` - Graph library
+- `matplotlib >= 3.7.0` - Plotting
+- `numpy >= 1.24.0` - Numerical computing
 
 ### Hướng Dẫn Sử Dụng GUI
 
