@@ -9,7 +9,7 @@ Toàn bộ code được chú thích bằng tiếng Việt rõ ràng, dễ hiể
 
 ## Demo
 
-**Web App:** [https://your-app.streamlit.app](https://your-app.streamlit.app) *(sau khi deploy)*
+**Web App:** https://appctrr-mjtgv739rmbmfyhkcsopov.streamlit.app/
 
 **Desktop App:** Clone repo và chạy `python gui_app.py`
 
@@ -18,7 +18,7 @@ Toàn bộ code được chú thích bằng tiếng Việt rõ ràng, dễ hiể
 ### Giao Diện Đồ Họa (GUI)
 1. **Giao diện thân thiện**: Sử dụng tkinter với matplotlib tích hợp
 2. **Tương tác trực quan**: Kéo thả đỉnh bằng chuột, zoom, pan
-3. **Màu sắc phân biệt**: Đường đi được tô màu (xanh → vàng → đỏ)
+3. **Màu sắc phân biệt**: Đường đi được tô màu (xanh - vàng - đỏ)
 4. **Layout thông minh**: Tự động điều chỉnh bố cục theo số đỉnh
 5. **Hiển thị thời gian thực**: Cập nhật đồ thị ngay lập tức
 
@@ -57,23 +57,19 @@ Toàn bộ code được chú thích bằng tiếng Việt rõ ràng, dễ hiể
 - Tô màu và phân tách thành 2 tập
 
 ### Trực Quan Hóa Nâng Cao
-- **Layout thích ứng**: Circular (≤10 đỉnh), Spring (11-50 đỉnh), Kamada-Kawai (>50 đỉnh)
+- **Layout thích ứng**: Circular (<=10 đỉnh), Spring (11-50 đỉnh), Kamada-Kawai (>50 đỉnh)
 - **Tô màu thông minh**: Đỉnh đầu (xanh lá), đỉnh cuối (đỏ), đỉnh trung gian (vàng)
 - **Highlight đường đi**: Cạnh trong kết quả thuật toán được tô màu đỏ nổi bật
 - **Kéo thả đỉnh**: Di chuyển đỉnh bằng chuột để tùy chỉnh bố cục
 - **Zoom & Pan**: Công cụ matplotlib tích hợp để phóng to/thu nhỏ
 
-## 📁 Cấu Trúc Dự Án
+## Cấu Trúc Dự Án
 
 ```
 App_ctrr/
-├── 🌐 streamlit_app.py          # Web App (Streamlit) - KHUYÊN DÙNG
-├── 🖥️ gui_app.py                # Desktop App (Tkinter)
-├── 📦 requirements.txt          # Thư viện cần thiết
-├── 📖 DEPLOY_GUIDE.md           # Hướng dẫn deploy web app
-├── 📖 QUICK_START.txt           # Hướng dẫn nhanh 3 bước
-├── 🧪 test_streamlit.py         # Test imports
-├── 🎲 create_sample_data.py     # Tạo dữ liệu mẫu
+├── streamlit_app.py             # Web App (Streamlit) - KHUYÊN DÙNG
+├── gui_app.py                   # Desktop App (Tkinter)
+├── requirements.txt             # Thư viện cần thiết
 ├── src/
 │   ├── core/                    # Module cốt lõi
 │   │   ├── graph.py            # Lớp đồ thị cơ bản
@@ -93,24 +89,23 @@ App_ctrr/
 │       ├── config.py           # Cấu hình
 │       └── helpers.py          # Hàm hỗ trợ
 ├── data/                        # Dữ liệu đồ thị (JSON/TXT)
-├── requirements.txt             # Thư viện cần thiết
 ├── README.md                    # File này
 ├── ARCHITECTURE.md             # Kiến trúc dự án
 └── NAMING_CONVENTIONS.md       # Quy tắc đặt tên
 ```
 
-## 🚀 Cài Đặt & Sử Dụng
+## Cài Đặt & Sử Dụng
 
 ### Yêu Cầu
 - Python 3.8+
 - pip (Python package installer)
 - Git
 
-### ⚡ Cách 1: Web App (Khuyên dùng - Dễ nhất)
+### Cách 1: Web App (Khuyên dùng - Dễ nhất)
 
 **Không cần cài đặt gì - Chỉ cần truy cập link:**
 
-👉 **[https://your-app.streamlit.app](https://your-app.streamlit.app)** *(sau khi deploy)*
+https://appctrr-mjtgv739rmbmfyhkcsopov.streamlit.app/
 
 **Hoặc muốn chạy local:**
 
@@ -128,14 +123,14 @@ streamlit run streamlit_app.py
 
 Truy cập: http://localhost:8501
 
-### 🖥️ Cách 2: Desktop App (Tkinter)
+### Cách 2: Desktop App (Tkinter)
 
 ```bash
 # Sau khi clone và cài đặt thư viện
 python gui_app.py
 ```
 
-### 📦 Thư viện cần thiết
+### Thư viện cần thiết
 - `streamlit >= 1.28.0` - Web framework
 - `plotly >= 5.17.0` - Interactive graphs
 - `networkx >= 3.0` - Graph library
@@ -145,29 +140,29 @@ python gui_app.py
 ### Hướng Dẫn Sử Dụng GUI
 
 #### 1. Tạo Đồ Thị
-- **Tạo đồ thị mới**: Chọn loại (vô hướng/có hướng) → Click "Tạo đồ thị mới"
-- **Tạo ngẫu nhiên**: Click "Tạo đồ thị ngẫu nhiên" → Nhập số đỉnh, xác suất cạnh, chọn kiểu tên đỉnh (số/chữ hoa/chữ thường)
+- **Tạo đồ thị mới**: Chọn loại (vô hướng/có hướng) -> Click "Tạo đồ thị mới"
+- **Tạo ngẫu nhiên**: Click "Tạo đồ thị ngẫu nhiên" -> Nhập số đỉnh, xác suất cạnh, chọn kiểu tên đỉnh (số/chữ hoa/chữ thường)
 
 #### 2. Thêm Đỉnh/Cạnh
-- **Thêm đỉnh**: Nhập tên đỉnh (số hoặc chữ) → Click "Thêm đỉnh"
-- **Thêm cạnh**: Nhập đỉnh u, v và trọng số w → Click "Thêm cạnh"
+- **Thêm đỉnh**: Nhập tên đỉnh (số hoặc chữ) -> Click "Thêm đỉnh"
+- **Thêm cạnh**: Nhập đỉnh u, v và trọng số w -> Click "Thêm cạnh"
 
 #### 3. Chạy Thuật Toán
-- **Duyệt BFS/DFS**: Click nút → Chọn đỉnh bắt đầu → Xem kết quả màu sắc trên đồ thị
-- **Đường đi ngắn nhất**: Click nút → Nhập đỉnh nguồn và đích → Đường đi được tô màu
-- **Cây khung nhỏ nhất**: Click nút → Chọn Prim/Kruskal → Các cạnh MST được highlight
-- **Luồng cực đại**: Click nút → Nhập nguồn và đích → Các cạnh có luồng được hiển thị
-- **Kiểm tra 2 phía**: Click nút → Xem kết quả và 2 tập đỉnh (nếu có)
-- **Đường đi Euler**: Click nút → Xem kết quả chu trình/đường đi Euler
+- **Duyệt BFS/DFS**: Click nút -> Chọn đỉnh bắt đầu -> Xem kết quả màu sắc trên đồ thị
+- **Đường đi ngắn nhất**: Click nút -> Nhập đỉnh nguồn và đích -> Đường đi được tô màu
+- **Cây khung nhỏ nhất**: Click nút -> Chọn Prim/Kruskal -> Các cạnh MST được highlight
+- **Luồng cực đại**: Click nút -> Nhập nguồn và đích -> Các cạnh có luồng được hiển thị
+- **Kiểm tra 2 phía**: Click nút -> Xem kết quả và 2 tập đỉnh (nếu có)
+- **Đường đi Euler**: Click nút -> Xem kết quả chu trình/đường đi Euler
 
 #### 4. Tương Tác Với Đồ Thị
-- **Kéo đỉnh**: Click và giữ chuột trên đỉnh → Di chuyển → Thả chuột
+- **Kéo đỉnh**: Click và giữ chuột trên đỉnh -> Di chuyển -> Thả chuột
 - **Zoom**: Dùng công cụ zoom trong toolbar
 - **Pan**: Dùng công cụ pan để di chuyển khung nhìn
 
 #### 5. Lưu/Tải Đồ Thị
-- **Lưu**: Click "Lưu đồ thị" → Chọn vị trí và tên file → Lưu dạng JSON/TXT
-- **Tải**: Click "Tải đồ thị" → Chọn file → Đồ thị được tải và hiển thị
+- **Lưu**: Click "Lưu đồ thị" -> Chọn vị trí và tên file -> Lưu dạng JSON/TXT
+- **Tải**: Click "Tải đồ thị" -> Chọn file -> Đồ thị được tải và hiển thị
 
 ### Ví Dụ Sử Dụng Module (Code)
 
@@ -189,10 +184,6 @@ print(f"Đường đi: {path}")  # [0, 1, 2]
 print(f"Độ dài: {distance}")  # 7.0
 ```
 
-## Tài Liệu
-
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Kiến trúc và thiết kế hệ thống
-- **[NAMING_CONVENTIONS.md](NAMING_CONVENTIONS.md)** - Quy tắc đặt tên trong dự án
 
 ## Ví Dụ Nâng Cao (Code)
 
@@ -231,7 +222,7 @@ graph.add_edge('A', 'C', 8)
 
 # Tìm đường đi ngắn nhất
 path, distance = find_shortest_path(graph, 'A', 'C')
-print(f"Đường đi: {' → '.join(path)}")  # A → B → C
+print(f"Đường đi: {' -> '.join(path)}")  # A -> B -> C
 print(f"Độ dài: {distance}")  # 8.0
 ```
 
@@ -316,14 +307,12 @@ Dự án này phù hợp cho:
 - Thực hành Python và lập trình hướng đối tượng
 - Học cách xây dựng GUI với tkinter và matplotlib
 
-## Screenshot
-
-![GUI Application](docs/screenshot.png) *(Giao diện chính của ứng dụng)*
-
 ## Công Nghệ Sử Dụng
 
 - **Python 3.8+**: Ngôn ngữ lập trình chính
-- **tkinter**: GUI framework (built-in Python)
+- **Streamlit**: Web framework cho Web App
+- **Plotly**: Interactive graphs cho Web App
+- **tkinter**: GUI framework cho Desktop App
 - **matplotlib**: Vẽ đồ thị và biểu đồ
 - **networkx**: Thư viện hỗ trợ layout và thuật toán đồ thị
 - **numpy**: Tính toán ma trận và số học
