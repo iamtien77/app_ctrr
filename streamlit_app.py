@@ -12,6 +12,13 @@ import time
 from io import BytesIO, StringIO
 from typing import List, Tuple, Optional
 
+# Import thư viện agraph để vẽ đồ thị tương tác (kéo thả đỉnh)
+try:
+    from streamlit_agraph import agraph, Node, Edge, Config
+    AGRAPH_AVAILABLE = True
+except ImportError:
+    AGRAPH_AVAILABLE = False
+
 # Import các module từ project
 from src.core.graph import Graph, GraphType
 from src.core.representations import AdjacencyMatrix, AdjacencyList, EdgeList
@@ -241,6 +248,111 @@ def init_session_state():
         st.session_state.pos = {}
     if 'algorithm_steps' not in st.session_state:
         st.session_state.algorithm_steps = []
+    if 'interactive_mode' not in st.session_state:
+        st.session_state.interactive_mode = True  # Mặc định bật chế độ tương tác
+
+
+def create_interactive_agraph(graph: Graph, 
+                               highlight_nodes: List = None,
+                               highlight_edges: List = None,
+                               node_colors: dict = None,
+                               height: int = 500):
+    """Tạo đồ thị tương tác với streamlit-agraph (hỗ trợ kéo thả đỉnh)"""
+    
+    if not AGRAPH_AVAILABLE:
+        st.warning("Thư viện streamlit-agraph chưa được cài đặt. Chạy: `pip install streamlit-agraph`")
+        return None
+    
+    if graph.vertex_count() == 0:
+        st.info("Đồ thị rỗng - Hãy thêm đỉnh và cạnh!")
+        return None
+    
+    nodes = []
+    edges_list = []
+    
+    # Màu sắc cho các nodes
+    for vertex in graph.get_vertices():
+        # Xác định màu node
+        if node_colors and vertex in node_colors:
+            color = node_colors[vertex]
+        elif highlight_nodes and vertex in highlight_nodes:
+            if vertex == highlight_nodes[0]:
+                color = '#2e7d32'  # Đỉnh nguồn - xanh lá đậm
+            elif vertex == highlight_nodes[-1]:
+                color = '#c62828'  # Đỉnh đích - đỏ đậm
+            else:
+                color = '#ef6c00'  # Đỉnh trung gian - cam
+        else:
+            color = '#1e88e5'  # Màu mặc định - xanh dương
+        
+        nodes.append(Node(
+            id=str(vertex),
+            label=str(vertex),
+            size=30,
+            color=color,
+            font={'color': 'white', 'size': 16, 'face': 'Arial', 'strokeWidth': 0},
+            borderWidth=3,
+            borderWidthSelected=5,
+            shape='circle'
+        ))
+    
+    # Tạo edges
+    for u, v, w in graph.get_edges():
+        is_highlighted = False
+        if highlight_edges:
+            if (u, v) in highlight_edges or (v, u) in highlight_edges:
+                is_highlighted = True
+        
+        edge_color = '#1565c0' if is_highlighted else '#b0bec5'
+        edge_width = 4 if is_highlighted else 2
+        
+        edges_list.append(Edge(
+            source=str(u),
+            target=str(v),
+            label=f"{w:.1f}",
+            color=edge_color,
+            width=edge_width,
+            font={'size': 12, 'color': '#333', 'align': 'middle'},
+            arrows={'to': {'enabled': graph.is_directed(), 'scaleFactor': 0.8}}
+        ))
+    
+    # Cấu hình đồ thị tương tác
+    config = Config(
+        width='100%',
+        height=height,
+        directed=graph.is_directed(),
+        physics={
+            'enabled': True,
+            'solver': 'forceAtlas2Based',
+            'forceAtlas2Based': {
+                'gravitationalConstant': -50,
+                'centralGravity': 0.01,
+                'springLength': 150,
+                'springConstant': 0.08,
+                'damping': 0.4
+            },
+            'stabilization': {
+                'enabled': True,
+                'iterations': 100
+            }
+        },
+        interaction={
+            'navigationButtons': True,
+            'keyboard': True,
+            'dragNodes': True,  # Cho phép kéo thả đỉnh
+            'dragView': True,   # Cho phép kéo view
+            'zoomView': True,   # Cho phép zoom
+            'hover': True,
+            'multiselect': True,
+            'selectable': True,
+            'tooltipDelay': 100
+        },
+        manipulation={
+            'enabled': False  # Tắt chế độ chỉnh sửa (thêm/xóa) trực tiếp
+        }
+    )
+    
+    return agraph(nodes=nodes, edges=edges_list, config=config)
 
 
 def graph_to_txt_string(graph: Graph) -> str:
@@ -753,25 +865,95 @@ def main():
     
     # ========== TAB 1: TRỰC QUAN HÓA ==========
     with tabs[0]:
+        # Toggle chọn chế độ hiển thị
+        mode_col1, mode_col2 = st.columns([3, 1])
+        
+        with mode_col1:
+            if AGRAPH_AVAILABLE:
+                st.session_state.interactive_mode = st.toggle(
+                    "Chế độ tương tác (kéo thả đỉnh bằng chuột)", 
+                    value=st.session_state.interactive_mode,
+                    help="Bật để kéo thả các đỉnh, zoom và di chuyển đồ thị bằng chuột"
+                )
+        
+        with mode_col2:
+            if st.session_state.interactive_mode and AGRAPH_AVAILABLE:
+                st.markdown("""
+                <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 0.85rem;">
+                    <b>Hướng dẫn:</b><br>
+                    • Kéo đỉnh để di chuyển<br>
+                    • Cuộn chuột để zoom<br>
+                    • Kéo nền để di chuyển view<br>
+                    • Nút điều hướng ở góc
+                </div>
+                """, unsafe_allow_html=True)
+        
+        st.divider()
+        
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            fig = create_graph_figure(
-                st.session_state.graph,
-                title="Đồ thị hiện tại"
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            if st.session_state.interactive_mode and AGRAPH_AVAILABLE:
+                # Chế độ tương tác với agraph
+                st.markdown("### Đồ thị tương tác")
+                create_interactive_agraph(
+                    st.session_state.graph,
+                    height=550
+                )
+            else:
+                # Chế độ tĩnh với Plotly
+                st.markdown("### Đồ thị tĩnh")
+                fig = create_graph_figure(
+                    st.session_state.graph,
+                    title="Đồ thị hiện tại"
+                )
+                st.plotly_chart(fig, use_container_width=True)
         
         with col2:
             st.markdown("### Danh sách cạnh")
             edges = st.session_state.graph.get_edges()
             if edges:
-                for i, (u, v, w) in enumerate(edges, 1):
-                    arrow = "→" if st.session_state.graph.is_directed() else "—"
-                    st.write(f"**{i}.** {u} {arrow} {v} (w={w:.1f})")
+                # Container có thể cuộn
+                edge_container = st.container(height=400)
+                with edge_container:
+                    for i, (u, v, w) in enumerate(edges, 1):
+                        arrow = "→" if st.session_state.graph.is_directed() else "—"
+                        st.write(f"**{i}.** {u} {arrow} {v} (w={w:.1f})")
             else:
                 st.info("Chưa có cạnh nào")
+            
+            # Hiển thị thông tin bổ sung
+            st.divider()
+            st.markdown("### Thao tác nhanh")
+            
+            delete_col1, delete_col2 = st.columns(2)
+            with delete_col1:
+                vertices = st.session_state.graph.get_vertices()
+                if vertices:
+                    del_v = st.selectbox("Chọn đỉnh:", vertices, key="del_vertex_select")
+            
+            with delete_col2:
+                st.write("")  # Spacer
+                st.write("")
+                if st.button("Xóa đỉnh", key="del_vertex_btn", use_container_width=True):
+                    if vertices:
+                        st.session_state.graph.remove_vertex(del_v)
+                        st.session_state.pos = {}
+                        st.rerun()
+            
+            # Xóa cạnh
+            if edges:
+                edge_options = [f"{u} {'→' if st.session_state.graph.is_directed() else '—'} {v}" for u, v, w in edges]
+                selected_edge = st.selectbox("Chọn cạnh:", edge_options, key="del_edge_select")
+                
+                if st.button("Xóa cạnh", key="del_edge_btn", use_container_width=True):
+                    idx = edge_options.index(selected_edge)
+                    u, v, w = edges[idx]
+                    st.session_state.graph.remove_edge(u, v)
+                    st.session_state.pos = {}
+                    st.rerun()
     
+
     # ========== TAB 2: THUẬT TOÁN CƠ BẢN ==========
     with tabs[1]:
         algo_col1, algo_col2 = st.columns([1, 2])
